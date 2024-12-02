@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
+  - name: Player
+    uniqueID: 0
+    locked: 0
+  - name: Platform
     uniqueID: 0
     locked: 0

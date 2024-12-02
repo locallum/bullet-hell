@@ -10,15 +10,21 @@ public class playerController : MonoBehaviour
     public float moveSpeed = 5f;
 
     private Rigidbody2D rb;
-    private Animator anim;
+    private Animator anim; 
 
     private Vector2 movement;
     private Vector2 mousePosition;
+
+    private List<Vector2> positions;
+
+    rewindAbility rewind;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        rewind = GetComponent<rewindAbility>();
+        positions = new List<Vector2>();
     }
 
     void Update()
@@ -27,16 +33,22 @@ public class playerController : MonoBehaviour
         movement.y = Input.GetAxisRaw("Vertical");
 
         if (movement.x != 0) anim.SetFloat("x input", movement.x);
-        if (movement.y != 0) anim.SetFloat("y input", movement.y);
 
-        //mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // bind rewind ability
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            rewind.startRewind();
+        } else if (Input.GetKeyUp(KeyCode.LeftShift)) {
+            rewind.stopRewind();
+        }
     }
 
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-
-        //transform.up = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
     }
 
+    public void fallOffPlatform() {
+        Debug.Log("PLAYER FELL!");
+        Destroy(this.gameObject);
+    }
 }
